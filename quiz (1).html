@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz — Robótica Educacional</title>
+<link rel="stylesheet" href="CssTcc.css" />
+<link rel="stylesheet" href="CssQuiz.css"/>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav>
+  <span class="logo">⚙ Robótica Educacional</span>
+  <ul id="navMenu">
+    <li><a href="index.html#historico">História</a></li>
+    <li><a href="index.html#tecnologias">Tecnologias</a></li>
+    <li><a href="index.html#impactos">Impactos</a></li>
+    <li><a href="quiz.html" style="opacity:1; font-weight:700;">Quiz</a></li>
+    <li><a href="participe.html">Participe</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="navMenu">☰</button>
+</nav>
+
+<div class="quiz-hero">
+  <div class="section-label">Verificação de aprendizagem</div>
+  <h1>Quiz: o que você sabe sobre <span style="color:var(--terracota,#d97757);">robótica educacional</span>?</h1>
+  <p>8 perguntas rápidas sobre a história, as tecnologias e os impactos sociais apresentados neste trabalho. Ao final, você recebe seu resultado e a explicação de cada resposta.</p>
+</div>
+
+<div class="quiz-shell">
+  <div class="quiz-card">
+
+    <!-- TELA DE PERGUNTAS -->
+    <div id="quizPlay">
+      <div class="quiz-meta">
+        <span id="quizContagem">Pergunta 1 de 8</span>
+        <span class="quiz-score-pill" id="quizPontos">0 acertos</span>
+      </div>
+      <div class="quiz-progress-track">
+        <div class="quiz-progress-fill" id="quizProgressoFill"></div>
+      </div>
+
+      <div class="quiz-question" id="quizPergunta"></div>
+      <div class="quiz-options" id="quizOpcoes"></div>
+
+      <div class="quiz-feedback" id="quizFeedback"></div>
+
+      <div class="quiz-nav-actions">
+        <button class="btn-primary" id="quizProximo" disabled>Próxima pergunta →</button>
+      </div>
+    </div>
+
+    <!-- TELA DE RESULTADO -->
+    <div class="quiz-result" id="quizResultado">
+      <div class="aro" id="quizAro">
+        <div class="aro-inner">
+          <div class="n" id="quizResultadoNum">0/8</div>
+          <div class="de">acertos</div>
+        </div>
+      </div>
+      <h3 id="quizResultadoTitulo"></h3>
+      <p id="quizResultadoTexto"></p>
+      <div class="acoes">
+        <button class="btn-primary" onclick="reiniciarQuiz()">Refazer o quiz</button>
+        <a class="btn-secondary" href="index.html" style="text-decoration:none; display:inline-flex; align-items:center;">Voltar ao trabalho</a>
+      </div>
+
+      <div class="quiz-revisao" id="quizRevisao"></div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divisor">
+
+<button id="back-to-top" title="Voltar ao topo" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
+
+<footer>
+  <strong>Robótica Educacional — Avanços e Impactos Sociais</strong><br>
+  Carlos Eduardo dos Santos · E. E. E. M. Profª. Maria Rocha · Santa Maria, RS · 2026
+  <span class="creditos">Quiz de fixação de conteúdo</span>
+</footer>
+
+<script>
+const perguntas = [
+  {
+    pergunta: "Quem criou a linguagem LOGO, base do Construcionismo, nas décadas de 1960–70?",
+    opcoes: ["Seymour Papert", "Alan Turing", "José Manuel Moran", "Steve Jobs"],
+    correta: 0,
+    explicacao: "Seymour Papert criou o LOGO no MIT, e a 'Tartaruga de Solo' respondia a comandos de programação, mostrando que crianças podiam aprender construindo."
+  },
+  {
+    pergunta: "Qual plataforma de hardware livre democratizou o acesso a projetos de automação nas escolas a partir dos anos 2010?",
+    opcoes: ["LEGO Mindstorms", "Arduino", "Raspberry Pi 1", "PlayStation"],
+    correta: 1,
+    explicacao: "O Arduino é uma plataforma de hardware aberto e de baixo custo que permitiu que escolas públicas criassem projetos de automação e circuitos programáveis."
+  },
+  {
+    pergunta: "Na sigla STEM, o que a letra 'E' representa?",
+    opcoes: ["Education", "Electronics", "Engineering", "Ethics"],
+    correta: 2,
+    explicacao: "'E' representa Engineering (Engenharia): o processo de projetar, prototipar, testar e iterar na construção de um robô."
+  },
+  {
+    pergunta: "Qual movimento incentiva o 'aprender fazendo' com espaços como FabLabs e Makerspaces?",
+    opcoes: ["Cultura Maker", "Realidade Aumentada", "ProInfo", "Ensino a distância"],
+    correta: 0,
+    explicacao: "A Cultura Maker incentiva o aprender fazendo, integrando espaços como FabLabs e Makerspaces ao ambiente escolar."
+  },
+  {
+    pergunta: "Segundo o trabalho, qual é um dos principais desafios da robótica educacional na rede pública brasileira?",
+    opcoes: [
+      "Excesso de professores qualificados",
+      "Infraestrutura precária e falta de equipamentos",
+      "Muito investimento em kits robóticos",
+      "Falta de interesse dos alunos"
+    ],
+    correta: 1,
+    explicacao: "Muitas escolas públicas não possuem equipamentos de qualidade nem conectividade suficiente para implementar a robótica de forma consistente."
+  },
+  {
+    pergunta: "Quais habilidades ('soft skills') a robótica educacional desenvolve naturalmente nos estudantes?",
+    opcoes: [
+      "Memorização e repetição",
+      "Trabalho em equipe, colaboração e pensamento crítico",
+      "Apenas habilidades manuais",
+      "Competitividade individual"
+    ],
+    correta: 1,
+    explicacao: "O trabalho em equipe, a colaboração, o pensamento crítico e a resolução de problemas são habilidades desenvolvidas naturalmente pelos projetos de robótica."
+  },
+  {
+    pergunta: "Qual tecnologia permite simular experiências imersivas sem os riscos e custos de laboratórios físicos tradicionais?",
+    opcoes: ["Arduino", "LEGO Mindstorms", "Realidade Aumentada / simuladores virtuais", "Inteligência Artificial apenas"],
+    correta: 2,
+    explicacao: "Simuladores e a Realidade Aumentada proporcionam experiências imersivas e realistas sem os riscos e custos dos laboratórios físicos tradicionais."
+  },
+  {
+    pergunta: "De acordo com Silveira (2023), citado no trabalho, o que a desigualdade no acesso às tecnologias pode aprofundar?",
+    opcoes: [
+      "A qualidade do ensino privado",
+      "Disparidades sociais",
+      "O número de escolas técnicas",
+      "A formação de professores"
+    ],
+    correta: 1,
+    explicacao: "A desigualdade no acesso às tecnologias pode aprofundar disparidades sociais, ampliando a exclusão digital entre estudantes."
+  }
+];
+
+let atual = 0;
+let acertos = 0;
+let respostas = []; // {escolhida, correta}
+
+const elPergunta = document.getElementById('quizPergunta');
+const elOpcoes = document.getElementById('quizOpcoes');
+const elFeedback = document.getElementById('quizFeedback');
+const elProximo = document.getElementById('quizProximo');
+const elContagem = document.getElementById('quizContagem');
+const elPontos = document.getElementById('quizPontos');
+const elFill = document.getElementById('quizProgressoFill');
+const elPlay = document.getElementById('quizPlay');
+const elResultado = document.getElementById('quizResultado');
+
+function renderPergunta() {
+  const q = perguntas[atual];
+  elContagem.textContent = `Pergunta ${atual + 1} de ${perguntas.length}`;
+  elPontos.textContent = `${acertos} acerto${acertos === 1 ? '' : 's'}`;
+  elFill.style.width = `${(atual / perguntas.length) * 100}%`;
+  elPergunta.textContent = q.pergunta;
+  elFeedback.classList.remove('show');
+  elFeedback.innerHTML = '';
+  elProximo.disabled = true;
+  elProximo.textContent = atual === perguntas.length - 1 ? 'Ver resultado →' : 'Próxima pergunta →';
+
+  elOpcoes.innerHTML = '';
+  const letras = ['A', 'B', 'C', 'D'];
+  q.opcoes.forEach((op, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.innerHTML = `<span class="letra">${letras[i]}</span><span>${op}</span>`;
+    btn.addEventListener('click', () => responder(i));
+    elOpcoes.appendChild(btn);
+  });
+}
+
+function responder(indice) {
+  const q = perguntas[atual];
+  const botoes = elOpcoes.querySelectorAll('.quiz-option');
+  botoes.forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.correta) b.classList.add('correta');
+    else if (i === indice) b.classList.add('errada');
+  });
+
+  const acertou = indice === q.correta;
+  if (acertou) acertos++;
+  respostas.push({ pergunta: q.pergunta, escolhida: q.opcoes[indice], correta: q.opcoes[q.correta], acertou });
+
+  elFeedback.classList.add('show');
+  elFeedback.innerHTML = `<strong>${acertou ? '✓ Correto!' : '✗ Não foi dessa vez.'}</strong>${q.explicacao}`;
+  elPontos.textContent = `${acertos} acerto${acertos === 1 ? '' : 's'}`;
+  elProximo.disabled = false;
+}
+
+elProximo.addEventListener('click', () => {
+  atual++;
+  if (atual < perguntas.length) {
+    renderPergunta();
+  } else {
+    mostrarResultado();
+  }
+});
+
+function mostrarResultado() {
+  elFill.style.width = '100%';
+  elPlay.style.display = 'none';
+  elResultado.classList.add('show');
+
+  const pct = Math.round((acertos / perguntas.length) * 100);
+  document.getElementById('quizAro').style.setProperty('--pct', pct);
+  document.getElementById('quizResultadoNum').textContent = `${acertos}/${perguntas.length}`;
+
+  let titulo, texto;
+  if (acertos === perguntas.length) {
+    titulo = 'Domínio completo do conteúdo!';
+    texto = 'Você acertou todas as perguntas. Os conceitos de história, tecnologias e impactos sociais da robótica educacional estão bem assimilados.';
+  } else if (acertos >= perguntas.length * 0.6) {
+    titulo = 'Bom entendimento geral';
+    texto = 'Você foi bem, mas vale revisar alguns pontos do trabalho para fixar melhor os detalhes.';
+  } else {
+    titulo = 'Vale revisar o conteúdo';
+    texto = 'Que tal voltar ao trabalho e reler as seções de história e impactos antes de tentar novamente?';
+  }
+  document.getElementById('quizResultadoTitulo').textContent = titulo;
+  document.getElementById('quizResultadoTexto').textContent = texto;
+
+  const revisao = document.getElementById('quizRevisao');
+  revisao.innerHTML = '<h4 style="font-size:0.95rem; font-weight:700; margin-bottom:0.5rem;">Revisão das respostas</h4>';
+  respostas.forEach(r => {
+    const div = document.createElement('div');
+    div.className = `quiz-revisao-item ${r.acertou ? 'ok' : 'no'}`;
+    div.innerHTML = `<span class="marca">${r.acertou ? '✓' : '✗'}</span><span><strong>${r.pergunta}</strong><br>${r.acertou ? 'Sua resposta: ' + r.escolhida : 'Você respondeu "' + r.escolhida + '" — correto: "' + r.correta + '"'}</span>`;
+    revisao.appendChild(div);
+  });
+}
+
+function reiniciarQuiz() {
+  atual = 0;
+  acertos = 0;
+  respostas = [];
+  elResultado.classList.remove('show');
+  elPlay.style.display = 'block';
+  renderPergunta();
+}
+
+renderPergunta();
+
+// MENU NO CELULAR
+const navToggle = document.getElementById('navToggle');
+const navMenu = document.getElementById('navMenu');
+navToggle.addEventListener('click', () => {
+  const aberto = navMenu.classList.toggle('aberto');
+  navToggle.setAttribute('aria-expanded', aberto);
+  navToggle.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+});
+navMenu.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    navMenu.classList.remove('aberto');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Abrir menu');
+  });
+});
+
+// BARRA DE PROGRESSO DE LEITURA (igual à página principal)
+const progressBar = document.getElementById('progress-bar');
+function atualizarProgresso() {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  progressBar.style.width = pct + '%';
+}
+window.addEventListener('scroll', atualizarProgresso);
+atualizarProgresso();
+
+// BOTÃO VOLTAR AO TOPO
+const backToTop = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 500) backToTop.classList.add('show');
+  else backToTop.classList.remove('show');
+});
+</script>
+</body>
+</html>
